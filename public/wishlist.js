@@ -22,10 +22,16 @@ function appendEditDelete(movie, title, year, rating) {
     editspan.addEventListener('click', () => {
         editspan.setAttribute("id", "editthis");
         editClicked = true;
+        let txt = editspan.parentElement.textContent;
+        let end = txt.indexOf('(');
+        let currtitle = txt.substr(0, end -1)
+        let curryear = txt.substr(end+1, 4);
+        let colon = txt.search('Rated:');
+        let currrating = txt.substring(colon + 7);
+        intitle.value = currtitle;
+        inyear.value = curryear;
+        inrating.value = currrating;
         // set the default values for the dialog
-        intitle.setAttribute('value', title);
-        inyear.setAttribute('value', year);
-        inrating.setAttribute('value', rating);
         moviedialog.showModal();
     });
     delspan.addEventListener('click', () => {
@@ -85,14 +91,17 @@ saveMovie.addEventListener('click', () => {
 })
 var cancel = document.getElementById("cancel");
 cancel.addEventListener('click', () => {
-    let editthis = document.getElementById("editthis").parentElement;
-    editthis.setAttribute("id", "dontedit");
+    let editthis = document.getElementById("editthis");
+    if (editthis != null) {
+        editthis = editthis.parentElement;
+        editthis.setAttribute("id", "dontedit");
+    }
 });
 // get the add movie button and give it an event listener
 var addButton = document.getElementById('addButton');
-addButton.addEventListener('click', function onOpen() {
-    intitle.setAttribute('value', '');
-    inyear.setAttribute('value', '');
-    inrating.setAttribute('value', 'G');
+addButton.addEventListener('click', () => {
+    intitle.value = '';
+    inyear.value = '';
+    inrating.value = 'G';
     moviedialog.showModal();
 });
