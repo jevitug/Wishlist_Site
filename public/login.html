@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+    <body>
+        <h1>Login</h1>
+        <label>Username:
+            <input name="username" type="text" id="username"/>
+        </label>
+        <br/>
+        <label>Password:
+            <input name="password" type="text" id="pass"/>
+        </label>
+        <button onclick="login()">Login</button>
+    </body>
+    <script>
+        function login() {
+            let username = document.getElementById("username").value;
+            let pass = document.getElementById("pass").value;
+            var data = `username=${username}&password=${pass}`;
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                let txt = JSON.parse(this.responseText)
+                if (this.status === 200) {
+                    window.location.href = './wishlist.html'
+                }
+                else {
+                    alert(txt.error.message);
+                }
+            }
+            });
+            xhr.open("POST", "http://fa19server.appspot.com/api/Users/login");
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("Accept", "*/*");
+            xhr.setRequestHeader("Cache-Control", "no-cache");
+            xhr.setRequestHeader("cache-control", "no-cache");
+            xhr.send(data);
+        }
+    </script>
+</html>
