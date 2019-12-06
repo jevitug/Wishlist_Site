@@ -7,46 +7,50 @@
     </head>
     <body>
         <main>
-            <h1> Big List of Movies</h2>
-            <ul id="movieList">
-                <li>Shrek (2003) - Rated: G</li>
-                <li>Dark Knight (2012) - Rated: PG-13</li>
+            <h1>XmasWishlist</h2>
+            <ul id="itemList">
+                <li>Skateboard $200 Sports Image Comment</li>
+                <li>MacBook $900 Electronics Image Comment</li>
             </ul>
-            <dialog id="deletemoviedialog">
+            <dialog id="deleteitemdialog">
                 <form method="dialog">
-                    <p>Delete Movie?</p>
+                    <p>Delete Item?</p>
                     <br>
                     <button id="dontdelete">Cancel</button>
                     <button id="okdelete">OK</button>
                 </form>
             </dialog>
-            <dialog id="moviedialog">
+            <dialog id="itemdialog">
                 <form method="dialog">
-                    <label>Title:
-                        <input name="title" type="text" id="intitle"/>
+                    <label>Name:
+                        <input name="name" type="text" id="inname"/>
                     </label>
-                    <br>
-                    <label>Year of Release:
-                        <input name="year" type="number" id="inyear"/>
+                    <br/>
+                    <label>Price:
+                        <input name="price" type="number" id="inprice"/>
                     </label>
-                    <br>
-                    <label>Rating:
-                        <select id="inrating">
-                            <option value="G">G</option>
-                            <option value="PG">PG</option>
-                            <option value="PG-13">PG-13</option>
-                            <option value="R">R</option>
-                            <option value="NR">NR</option>
-                        </select>
+                    <br/>
+                    <label>Category:
+                        <input name="category" type="text" id="incat"/>
                     </label>
+                    <br/>
+                    <label>Image:
+                        <input name="image" type="text" id="inimg"/>
+                    </label>
+                    <br/>
+                    <label>Comment:
+                        <input name="comment" type="text" id="incom"/>
+                    </label>
+                    <br/>
+                    <br/>
                     <div>
                         <button id="cancel">Cancel</button>
-                        <button id="saveMovie">Save</button>
+                        <button id="saveItem">Save</button>
                     </div>
                 </form>
             </dialog>
             <div id="mybtn">
-                <button id="addButton">Add Movie</button>
+                <button id="addButton">Add Item</button>
             </div>
             <script type="text/javascript" src="wishlist.js"> </script>
         </main>

@@ -1,10 +1,11 @@
-var intitle = document.getElementById("intitle");
-var inyear = document.getElementById("inyear");
-var inrating = document.getElementById("inrating");
+var inname = document.getElementById("inname");
+var inprice = document.getElementById("inprice");
+var incat = document.getElementById("incat");
+var inimg = document.getElementById("inimg");
+var incom = document.getElementById("incom");
 var editClicked = false;
-
 // append edit and delete buttons to each item
-function appendEditDelete(movie, title, year, rating) {
+function appendEditDelete(item) {
     var editspan = document.createElement("span");    
     var pencil = document.createElement('img');
     pencil.setAttribute('src', './pencil.png');
@@ -22,46 +23,42 @@ function appendEditDelete(movie, title, year, rating) {
     editspan.addEventListener('click', () => {
         editspan.setAttribute("id", "editthis");
         editClicked = true;
-        let txt = editspan.parentElement.textContent;
-        let end = txt.indexOf('(');
-        let currtitle = txt.substr(0, end -1)
-        let curryear = txt.substr(end+1, 4);
-        let colon = txt.search('Rated:');
-        let currrating = txt.substring(colon + 7);
-        intitle.value = currtitle;
-        inyear.value = curryear;
-        inrating.value = currrating;
-        // set the default values for the dialog
-        moviedialog.showModal();
+        let txt = editspan.parentElement.textContent.split(' ');
+        let name = txt[0];
+        let price = txt[1].replace('$', '');
+        let cat = txt[2];
+        let img = txt[3];
+        let com = txt[4];
+        // set the default values for the input boxes
+        inname.value = name;
+        inprice.value = price;
+        incat.value = cat;
+        inimg.value = img;
+        incom.value = com;
+        itemdialog.showModal();
     });
     delspan.addEventListener('click', () => {
         delspan.parentElement.setAttribute("id", "deletethis");
-        deletemoviedialog.showModal();
+        deleteitemdialog.showModal();
     });
-    movie.appendChild(editspan);
-    movie.appendChild(delspan);
-    return movie;
+    item.appendChild(editspan);
+    item.appendChild(delspan);
+    return item;
 }
 
-function createMovieItem(title, year, rating) {
-    let movie = document.createElement("li");
-    let text = document.createTextNode(`${title} (${year}) - Rating: ${rating}`);
-    movie.appendChild(text);
-    movie = appendEditDelete(movie, title, year, rating);
-    document.getElementById("movieList").appendChild(movie);
+function createItem(name, price, cat, img, com) {
+    let item = document.createElement("li");
+    let text = document.createTextNode(`${name} ${price} ${cat} ${img} ${com}`);
+    item.appendChild(text);
+    item = appendEditDelete(item);
+    document.getElementById("itemList").appendChild(item);
 }
 // go through all the elements and append the edit and delete buttons
-var movieItems = document.getElementsByTagName("li");
-for (let i = 0; i < movieItems.length; i++) {
-    let txt = movieItems[i].textContent;
-    let end = txt.indexOf('(');
-    let title = txt.substr(0, end -1)
-    let year = txt.substr(end+1, 4);
-    let colon = txt.search('Rated:');
-    let rating = txt.substring(colon + 7);
-    movieItems[i] = appendEditDelete(movieItems[i], title, year, rating);
+var myitems = document.getElementsByTagName("li");
+for (let i = 0; i < myitems.length; i++) {
+    myitems[i] = appendEditDelete(myitems[i]);
 }
-// delete the movie by deleting the movie w the unique ID
+// delete the item by deleting the item with the unique ID
 var okdelete = document.getElementById("okdelete");
 okdelete.addEventListener('click', () => {
     let deletethis = document.getElementById("deletethis")
@@ -73,35 +70,39 @@ dontdelete.addEventListener('click', () => {
     let dontdelete = document.getElementById("deletethis");
     dontdelete.setAttribute("id", "notyet");
 })
-// add the new movie into the list
-var saveMovie = document.getElementById("saveMovie");
-saveMovie.addEventListener('click', () => {
-    // the selected movie is edited
+// add the new item into the list
+var saveItem = document.getElementById("saveItem");
+saveItem.addEventListener('click', () => {
+    // the selected item is edited
     if (editClicked) {
-        // get the movie that will be edited
+        // get the item that will be edited
         let editthis = document.getElementById("editthis").parentElement;
-        editthis.innerHTML = `${intitle.value} (${inyear.value}) - Rated: ${inrating.value}`;
-        editthis = appendEditDelete(editthis, intitle.value, inyear.value, inrating.value);
+        editthis.innerHTML = `${inname.value} ${inprice.value} ${incat.value} ${inimg.value} ${incom.value}`;
+        editthis = appendEditDelete(editthis);
         editClicked = false;
     }
-    // a new movie is added to the list
+    // a new item is added to the list
     else {
-        createMovieItem(intitle.value, inyear.value, inrating.value);
+        createItem(inname.value, inprice.value, incat.value, inimg.value, incom.value);
     }
 })
 var cancel = document.getElementById("cancel");
 cancel.addEventListener('click', () => {
     let editthis = document.getElementById("editthis");
     if (editthis != null) {
-        editthis = editthis.parentElement;
+        // editthis.setAttribute('', '');
+        // editthis = editthis.parentElement;
         editthis.setAttribute("id", "dontedit");
+        editClicked = false;
     }
 });
-// get the add movie button and give it an event listener
+// get the add item button and give it an event listener
 var addButton = document.getElementById('addButton');
 addButton.addEventListener('click', () => {
-    intitle.value = '';
-    inyear.value = '';
-    inrating.value = 'G';
-    moviedialog.showModal();
+    inname.value = '';
+    inprice.value = '';
+    incat.value = '';
+    inimg.value = '';
+    incom.value = '';
+    itemdialog.showModal();
 });
