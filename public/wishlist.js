@@ -64,6 +64,8 @@ var myitems = document.getElementsByTagName("li");
 for (let i = 0; i < myitems.length; i++) {
     myitems[i] = appendEditDelete(myitems[i]);
 }
+
+
 // delete the item by deleting the item with the unique ID
 var okdelete = document.getElementById("okdelete");
 okdelete.addEventListener('click', () => {
@@ -89,7 +91,21 @@ saveItem.addEventListener('click', () => {
     }
     // a new item is added to the list
     else {
+
         createItem(inname.value, inprice.value, incat.value, inimg.value, incom.value);
+        var data = `item=${inname.value}&price=${inprice.value}&category=${incat.value}&image=${inimg.value}&comment=${incom.value}`;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            console.log(this.responseText);
+        }
+        });
+
+        xhr.open("POST", `http://fa19server.appspot.com/api/wishlists?access_token=${myStorage['tokenkey']}`);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(data);
     }
 })
 var cancel = document.getElementById("cancel");
