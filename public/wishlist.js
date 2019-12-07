@@ -17,6 +17,7 @@ if (!(userkey in myStorage) || !(tokenkey in myStorage)) {
     alert("Please Enter a valid Username and Password");
 }
 
+
 // append edit and delete buttons to each item
 function appendEditDelete(item) {
     var editspan = document.createElement("span");    
@@ -59,6 +60,7 @@ function appendEditDelete(item) {
     return item;
 }
 
+//creates item in the DOM
 function createItem(name, price, cat, img, com) {
     let item = document.createElement("li");
     let text = document.createTextNode(`${name} ${price} ${cat} ${img} ${com}`);
@@ -66,6 +68,33 @@ function createItem(name, price, cat, img, com) {
     item = appendEditDelete(item);
     document.getElementById("itemList").appendChild(item);
 }
+
+//url endpoint "/wishlists/myWishlist?access_token="
+//if successful login, get the wishlist data from the database
+//First: iterate through database, calling createItem(name, price, cat, img, com), 
+//then call appendEditDelete(item)
+
+var data = null;
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+        console.log(this.responseText);
+        let txt = JSON.parse(this.responseText).wishItems;
+        //console.log(txt);
+        for(let i = 0; i < txt.length; i++){
+            createItem(txt[i].item, txt[i].price, txt[i].category, txt[i].image, txt[i].comment);
+            appendEditDelete(currItem);
+        }
+                
+    }
+});
+
+xhr.open("GET", `http://fa19server.appspot.com/api/wishlists/myWishlist?access_token=${myStorage['tokenkey']}`);
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+xhr.send(data);
+
+
 // go through all the elements and append the edit and delete buttons
 var myitems = document.getElementsByTagName("li");
 for (let i = 0; i < myitems.length; i++) {
@@ -141,31 +170,3 @@ logoutButton.addEventListener('click', () => {
     xhr.send(data);
 })
 
-//url endpoint "/wishlists/myWishlist?access_token="
-
-/*      var data = null;
-
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                console.log(this.responseText);
-            }
-        });
-
-        xhr.open("GET", "http://fa19server.appspot.com/api/wishlists/myWishlist?access_token=fiGHwbIA4AN8X5Ekz76ClXzMXsjidDwts54wJXeQEaDEZnjS5A8yY5ABNhjbuhIg");
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.setRequestHeader("User-Agent", "PostmanRuntime/7.20.1");
-*/
-        //xhr.setRequestHeader("Accept", "*/*");
-/*
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader("Postman-Token", "a095923e-fb58-4e91-a179-7adda74b1909,bfc6ea58-eb0f-4813-9ebf-05c4a505db17");
-        xhr.setRequestHeader("Host", "fa19server.appspot.com");
-        xhr.setRequestHeader("Accept-Encoding", "gzip, deflate");
-        xhr.setRequestHeader("Connection", "keep-alive");
-        xhr.setRequestHeader("cache-control", "no-cache");
-
-        xhr.send(data);
-*/
