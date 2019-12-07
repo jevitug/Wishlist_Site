@@ -15,6 +15,7 @@
         <button onclick="login()">Login</button>
     </body>
     <script>
+        var myStorage = window.localStorage;
         function login() {
             let username = document.getElementById("username").value;
             let pass = document.getElementById("pass").value;
@@ -23,9 +24,13 @@
             xhr.withCredentials = true;
             xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                let txt = JSON.parse(this.responseText)
+                let txt = JSON.parse(this.responseText);
+                console.log(txt.id);
                 if (this.status === 200) {
+                    myStorage['userkey'] = username;
+                    myStorage['tokenkey'] = txt.id;
                     window.location.href = './wishlist.html'
+                    
                 }
                 else {
                     alert(txt.error.message);

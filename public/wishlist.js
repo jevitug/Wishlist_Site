@@ -4,7 +4,13 @@ var incat = document.getElementById("incat");
 var inimg = document.getElementById("inimg");
 var incom = document.getElementById("incom");
 var editClicked = false;
-// append edit and delete buttons to each item
+var myStorage = window.localStorage;
+
+// onload check if the username/access_token is not in local storage
+if (!('userkey' in myStorage) || !('tokenkey' in myStorage)) {
+    window.location.href = './login.html';
+}
+
 function appendEditDelete(item) {
     var editspan = document.createElement("span");    
     var pencil = document.createElement('img');
@@ -90,8 +96,6 @@ var cancel = document.getElementById("cancel");
 cancel.addEventListener('click', () => {
     let editthis = document.getElementById("editthis");
     if (editthis != null) {
-        // editthis.setAttribute('', '');
-        // editthis = editthis.parentElement;
         editthis.setAttribute("id", "dontedit");
         editClicked = false;
     }
@@ -106,3 +110,23 @@ addButton.addEventListener('click', () => {
     incom.value = '';
     itemdialog.showModal();
 });
+
+// get the logout button and give it an event listener
+var logoutButton = document.getElementById('logoutButton');
+logoutButton.addEventListener('click', () => {
+    var data = null;
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            myStorage.removeItem('tokenkey');
+            myStorage.removeItem('userkey');
+            window.location.href = './login.html';
+        }
+    });
+    xhr.open("POST", `http://fa19server.appspot.com/api/Users/logout?access_token=${myStorage['tokenkey']}`);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send(data);
+})
