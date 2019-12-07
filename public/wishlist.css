@@ -31,3 +31,10 @@ button {
 #mybtn {
     text-align: center
 }
+
+#lgtbtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 3px;
+}

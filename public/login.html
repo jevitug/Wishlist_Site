@@ -15,6 +15,8 @@
         <button onclick="login()">Login</button>
     </body>
     <script>
+        var myStorage = window.localStorage;
+        
         function login() {
             let username = document.getElementById("username").value;
             let pass = document.getElementById("pass").value;
@@ -25,6 +27,8 @@
             if (this.readyState === 4) {
                 let txt = JSON.parse(this.responseText)
                 if (this.status === 200) {
+                    myStorage['userkey'] = username;
+                    myStorage['tokenkey'] = txt.id;
                     window.location.href = './wishlist.html'
                 }
                 else {
