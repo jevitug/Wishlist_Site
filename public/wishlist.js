@@ -59,17 +59,49 @@ function createItem(name, price, cat, img, com) {
     item = appendEditDelete(item);
     document.getElementById("itemList").appendChild(item);
 }
-// go through all the elements and append the edit and delete buttons
-var myitems = document.getElementsByTagName("li");
-for (let i = 0; i < myitems.length; i++) {
-    myitems[i] = appendEditDelete(myitems[i]);
-}
 
+var data = null;
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+        console.log(this.responseText);
+        let txt = JSON.parse(this.responseText).wishItems;
+        // iterating through all the items and saving the name and id into local storage
+        for(let i = 0; i < txt.length; i++){
+            myStorage[txt[i].item] = txt[i].id;
+            createItem(txt[i].item, txt[i].price, txt[i].category, txt[i].image, txt[i].comment);
+        }
+    }
+});
+xhr.open("GET", `http://fa19server.appspot.com/api/wishlists/myWishlist?access_token=${myStorage['tokenkey']}`);
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+xhr.send(data);
 
 // delete the item by deleting the item with the unique ID
 var okdelete = document.getElementById("okdelete");
 okdelete.addEventListener('click', () => {
-    let deletethis = document.getElementById("deletethis")
+    let deletethis = document.getElementById("deletethis");
+    console.log(deletethis);
+    // deletes the item from myStorage
+    let itemvals = deletethis.textContent.split(' ');
+    let name = itemvals[0];
+    let itemid = myStorage[name];
+    myStorage.removeItem(name);
+    var data = null;
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+        console.log(this.responseText);
+    }
+    });
+
+    xhr.open("DELETE", `http://fa19server.appspot.com/api/wishlists/${itemid}?access_token=${myStorage['tokenkey']}`);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send(data);
+
     deletethis.remove();
 });
 // dont delete and change the  unique ID to something safe
@@ -85,13 +117,29 @@ saveItem.addEventListener('click', () => {
     if (editClicked) {
         // get the item that will be edited
         let editthis = document.getElementById("editthis").parentElement;
+        let txt = editthis.textContent.split(' ');
+        let name = txt[0];
+        let itemid = myStorage[name];
         editthis.innerHTML = `${inname.value} ${inprice.value} ${incat.value} ${inimg.value} ${incom.value}`;
         editthis = appendEditDelete(editthis);
         editClicked = false;
-    }
-    // a new item is added to the list
-    else {
+        var data = `item=${inname.value}&price=${inprice.value}&category=${incat.value}&image=${inimg.value}&comment=${incom.value}`;
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
 
+        xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            console.log(this.responseText);
+        }
+        });
+
+        xhr.open("POST", `http://fa19server.appspot.com/api/wishlists/${itemid}/replace?access_token=${myStorage['tokenkey']}`);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(data);
+    }
+    // a new item is added to the list and added to the backend array
+    // the item is also added to the local storage
+    else {
         createItem(inname.value, inprice.value, incat.value, inimg.value, incom.value);
         var data = `item=${inname.value}&price=${inprice.value}&category=${incat.value}&image=${inimg.value}&comment=${incom.value}`;
         var xhr = new XMLHttpRequest();
@@ -128,6 +176,8 @@ addButton.addEventListener('click', () => {
 });
 
 // get the logout button and give it an event listener
+// Send a request to the endpoint and remove the tokenkey and userkey 
+// for the localstorage and navigate the user to the login page
 var logoutButton = document.getElementById('logoutButton');
 logoutButton.addEventListener('click', () => {
     var data = null;
