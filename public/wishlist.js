@@ -54,8 +54,41 @@ function appendEditDelete(item) {
 
 function createItem(name, price, cat, img, com) {
     let item = document.createElement("li");
-    let text = document.createTextNode(`${name} ${price} ${cat} ${img} ${com}`);
-    item.appendChild(text);
+    let section = document.createElement('section');
+    section.className ='listItem';
+    
+    let tdiv = document.createElement('div');
+    tdiv.className = 'textBlock';
+    let pspan = document.createElement('span');
+    pspan.className = 'itemPrice';
+    pspan.innerHTML = "$" + price;
+    let nspan = document.createElement('span');
+    nspan.className = 'itemName';
+    nspan.innerHTML = name;
+    let cspan = document.createElement('span');
+    cspan.className = 'itemCat';
+    cspan.innerHTML = cat;
+    tdiv.appendChild(pspan);
+    tdiv.appendChild(nspan);
+    tdiv.appendChild(cspan);
+
+    let idiv = document.createElement('div');
+    idiv.className = 'itemImg';
+    let currImg = document.createElement('img');
+    currImg.src = img;
+    currImg.height = '400';
+    currImg.width = '600';
+    let currCom = document.createElement('p');
+    currCom.className = 'itemCom';
+    currCom.innerHTML = com;
+    idiv.appendChild(currImg);
+    idiv.appendChild(currCom);
+
+    // let text = document.createTextNode(`${name} ${price} ${cat} ${img} ${com}`);
+    // item.appendChild(text);
+    section.appendChild(tdiv);
+    section.appendChild(idiv);
+    item.appendChild(section);
     item = appendEditDelete(item);
     document.getElementById("itemList").appendChild(item);
 }
