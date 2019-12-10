@@ -2,26 +2,64 @@
 <html>
     <head>
         <title>Sign Up</title>
+        <style>
+            input{
+                width: 33%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                display: inline-block;
+                border:none;
+                background: #f1f1f1;
+            }
+
+            input:focus{
+                background-color:#ddd;
+                outline:none;
+            }
+
+            * { 
+                box-sizing: border-box;
+                text-align: center;
+                }        
+            
+            button {
+                cursor: pointer;
+                opacity: 0.8;
+                font-weight:bold;
+            }
+
+            button:hover{
+                opacity:1;
+            }
+
+            .cancelbtn{
+                background-color: #f44336;
+                border-color: red;
+            }
+
+            .signupbtn{
+                background-color: #33CC66;
+                border-color: #336600;
+            }
+
+            underline{
+                text-decoration: underline;
+            }
+        </style>
     </head>
     <body>
-        <h1>Sign Up to create a XmasWishList</h1>
-        <label>Username:
-            <input name="username" type="text" id="username" required/>
-        </label>
-        <br/>
-        <label>Email:
-            <input name="email" type="text" id="email" required/>
-        </label>
-        <br/>
-        <label>Password:
-            <input name="password" type="password" id="pass" required/>
-        </label>
-        <br/>
-        <label>Confirm Password:
-            <input name="confpassword" type="password" id="confpass" required/>
-        </label>
-        <br/>
-        <button onclick="signup()">Sign Up</button>
+        <h1><underline>Sign Up</underline> to Create Your Own Holiday Wishlist!</h1>
+        <br />
+        <input name="username" type="text" id="username" placeholder="Username" required/>
+        <br />
+        <input name="email" type="text" id="email" placeholder="E-mail"required/>
+        <br />
+        <input name="password" type="password" id="pass" placeholder="Password"required/>
+        <br />
+        <input name="confpassword" type="password" id="confpass" Placeholder="Re-Enter Password" required/>
+        <br />
+        <button onclick="clearFields()" class="cancelbtn">Cancel</button>
+        <button onclick="signup()" class="signupbtn">Sign Up</button>
     </body>
     <script>
         // naviage to a page ;
@@ -54,6 +92,13 @@
                 xhr.setRequestHeader("cache-control", "no-cache");
                 xhr.send(data);
             }
+        }
+
+        function clearFields(){
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('pass').value = '';
+            document.getElementById('confpass').value = '';
         }
     </script>
 </html>

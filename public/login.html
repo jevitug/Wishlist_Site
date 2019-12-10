@@ -2,17 +2,59 @@
 <html>
     <head>
         <title>Login</title>
+        <style>
+            input{
+                width: 33%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                display: inline-block;
+                border:none;
+                background: #f1f1f1;
+            }
+
+            input:focus{
+                background-color:#ddd;
+                outline:none;
+            }
+
+            * { 
+                box-sizing: border-box;
+                text-align: center;
+                }
+
+            button {
+                cursor: pointer;
+                opacity: 0.8;
+                font-weight:bold;
+            }
+
+            button:hover{
+                opacity:1;
+            }
+
+            .cancelbtn{
+                background-color: #f44336;
+                border-color: red;
+            }
+
+            .loginbtn{
+                background-color: gold;
+                border-color:#FFCC66;
+            }
+
+            underline{
+                text-decoration: underline;
+            }
+        </style>
     </head>
     <body>
         <h1>Login</h1>
-        <label>Username:
-            <input name="username" type="text" id="username"/>
-        </label>
+        <input name="username" type="text" placeholder="Username" id="username"/>
         <br/>
-        <label>Password:
-            <input name="password" type="password" id="pass"/>
-        </label>
-        <button onclick="login()">Login</button>
+        <input name="password" type="password" placeholder="Password" id="pass"/>
+        <br />
+        <button onclick="clearFields()" class="cancelbtn">Cancel</button>
+        <button onclick="login()" class="loginbtn">Login</button>
     </body>
     <script>
         var myStorage = window.localStorage;
@@ -42,6 +84,13 @@
             xhr.setRequestHeader("Cache-Control", "no-cache");
             xhr.setRequestHeader("cache-control", "no-cache");
             xhr.send(data);
+        }
+
+        function clearFields(){
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('pass').value = '';
+            document.getElementById('confpass').value = '';
         }
     </script>
 </html>
