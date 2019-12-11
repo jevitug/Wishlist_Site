@@ -1,25 +1,28 @@
+html {
+    background: url(./christmas_theme.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
 h1 {
     text-align: center;
     font-family: Lora;
 }
 body {
     text-align: center;
-    background: #708090;
 }
 li {
     font-size: 20px;
     font-family: Merriweather;
+    display: flex;
 }
 ul {
     list-style-type: none;
     padding-left: 0;
 }
 main {
-    width: 600px;
+    width: 800px;
     text-align: left;
     margin: auto;
     margin-top: 100px;
-    background: lightgray;
     padding: 25px;
     vertical-align: middle;
 }
@@ -31,10 +34,38 @@ button {
 #mybtn {
     text-align: center
 }
-
 #lgtbtn {
-    position: absolute;
+    position: fixed;
     top: 0px;
     right: 0px;
     margin: 3px;
+}
+/* list itom on the wishlist page */
+.listItem {
+    border-style: solid;
+    border-color: lightgray;
+    border-radius: 10px;
+    width: 620px;
+    height: 550px;
+    margin:10px auto;
+    background-color:white;
+}
+/* block for the price, name, and category */
+.textBlock {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 40px;
+}
+/* add styling to the item name */
+.itemName {
+    font-family: Impact;
+    color: red;
+}
+/* center the image and the comment */
+.itemImg {
+    text-align: center;
+}
+.itemCom {
+    font-size: 20px;
 }
