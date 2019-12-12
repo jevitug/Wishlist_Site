@@ -1,6 +1,7 @@
-<!DOCTYPE hmtl>
+<!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Sign Up</title>
         <style>
             html {
@@ -49,60 +50,63 @@
             underline{
                 text-decoration: underline;
             }
+            #sig {
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body>
-        <h1><underline>Sign Up</underline> to Create Your Own Holiday Wishlist!</h1>
+        <h1><span id='sig'>Sign Up</span> to Create Your Own Holiday Wishlist!</h1>
         <br />
         <input name="username" type="text" id="username" placeholder="Username" required/>
         <br />
-        <input name="email" type="text" id="email" placeholder="E-mail"required/>
+        <input name="email" type="text" id="email" placeholder="E-mail" required/>
         <br />
-        <input name="password" type="password" id="pass" placeholder="Password"required/>
+        <input name="password" type="password" id="pass" placeholder="Password" required/>
         <br />
         <input name="confpassword" type="password" id="confpass" Placeholder="Re-Enter Password" required/>
         <br />
         <button onclick="clearFields()" class="cancelbtn">Cancel</button>
         <button onclick="signup()" class="signupbtn">Sign Up</button>
-    </body>
-    <script>
-        // naviage to a page ;
-        function signup() {
-            let username = document.getElementById('username').value;
-            let email = document.getElementById('email').value;
-            let pass = document.getElementById('pass').value;
-            let confpass = document.getElementById('confpass').value;
-            if(pass != confpass){
-                alert("Please confirm your password");
-            } else {
-                var data = `username=${username}&email=${email}&password=${pass}`;
-                data.replace('@', '%40');
-                var xhr = new XMLHttpRequest();
-                xhr.withCredentials = true;
-
-                xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    let txt = JSON.parse(this.responseText)
-                    if (this.status === 200) {
-                        window.location.href = './login.html'
+        <script>
+            // naviage to a page ;
+            function signup() {
+                let username = document.getElementById('username').value;
+                let email = document.getElementById('email').value;
+                let pass = document.getElementById('pass').value;
+                let confpass = document.getElementById('confpass').value;
+                if(pass != confpass){
+                    alert("Please confirm your password");
+                } else {
+                    var data = `username=${username}&email=${email}&password=${pass}`;
+                    data.replace('@', '%40');
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+    
+                    xhr.addEventListener("readystatechange", function () {
+                    if (this.readyState === 4) {
+                        let txt = JSON.parse(this.responseText)
+                        if (this.status === 200) {
+                            window.location.href = './login.html'
+                        }
+                        else {
+                            alert(txt.error.message);
+                        }
                     }
-                    else {
-                        alert(txt.error.message);
-                    }
+                    });
+                    xhr.open("POST", "http://fa19server.appspot.com/api/Users");
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.setRequestHeader("cache-control", "no-cache");
+                    xhr.send(data);
                 }
-                });
-                xhr.open("POST", "http://fa19server.appspot.com/api/Users");
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.setRequestHeader("cache-control", "no-cache");
-                xhr.send(data);
             }
-        }
-
-        function clearFields(){
-            document.getElementById('username').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('pass').value = '';
-            document.getElementById('confpass').value = '';
-        }
-    </script>
+    
+            function clearFields(){
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('pass').value = '';
+                document.getElementById('confpass').value = '';
+            }
+        </script>
+    </body>
 </html>

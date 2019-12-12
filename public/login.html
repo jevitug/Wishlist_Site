@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Login</title>
         <style>
             input{
@@ -60,42 +61,45 @@
         <br />
         <button onclick="clearFields()" class="cancelbtn">Cancel</button>
         <button onclick="login()" class="loginbtn">Login</button>
-    </body>
-    <script>
-        var myStorage = window.localStorage;
-        
-        function login() {
-            let username = document.getElementById("username").value;
-            let pass = document.getElementById("pass").value;
-            var data = `username=${username}&password=${pass}`;
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                let txt = JSON.parse(this.responseText)
-                if (this.status === 200) {
-                    myStorage['userkey'] = username;
-                    myStorage['tokenkey'] = txt.id;
-                    window.location.href = './wishlist.html'
-                }
-                else {
-                    alert(txt.error.message);
+        <script>
+            // naviage to a page ;
+            function signup() {
+                let username = document.getElementById('username').value;
+                let email = document.getElementById('email').value;
+                let pass = document.getElementById('pass').value;
+                let confpass = document.getElementById('confpass').value;
+                if(pass != confpass){
+                    alert("Please confirm your password");
+                } else {
+                    var data = `username=${username}&email=${email}&password=${pass}`;
+                    data.replace('@', '%40');
+                    var xhr = new XMLHttpRequest();
+                    xhr.withCredentials = true;
+    
+                    xhr.addEventListener("readystatechange", function () {
+                    if (this.readyState === 4) {
+                        let txt = JSON.parse(this.responseText)
+                        if (this.status === 200) {
+                            window.location.href = './login.html'
+                        }
+                        else {
+                            alert(txt.error.message);
+                        }
+                    }
+                    });
+                    xhr.open("POST", "http://fa19server.appspot.com/api/Users");
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.setRequestHeader("cache-control", "no-cache");
+                    xhr.send(data);
                 }
             }
-            });
-            xhr.open("POST", "http://fa19server.appspot.com/api/Users/login");
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.setRequestHeader("Accept", "*/*");
-            xhr.setRequestHeader("Cache-Control", "no-cache");
-            xhr.setRequestHeader("cache-control", "no-cache");
-            xhr.send(data);
-        }
-
-        function clearFields(){
-            document.getElementById('username').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('pass').value = '';
-            document.getElementById('confpass').value = '';
-        }
-    </script>
+    
+            function clearFields(){
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('pass').value = '';
+                document.getElementById('confpass').value = '';
+            }
+        </script>
+    </body>
 </html>
