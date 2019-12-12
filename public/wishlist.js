@@ -115,10 +115,8 @@ xhr.send(data);
 var okdelete = document.getElementById("okdelete");
 okdelete.addEventListener('click', () => {
     let deletethis = document.getElementById("deletethis");
-    console.log(deletethis);
-    // deletes the item from myStorage
-    let itemvals = deletethis.textContent.split(' ');
-    let name = itemvals[0];
+    let name = deletethis.firstChild.firstChild.childNodes[1].textContent;
+    console.log(name);
     let itemid = myStorage[name];
     myStorage.removeItem(name);
     var data = null;
