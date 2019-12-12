@@ -29,13 +29,14 @@ function appendEditDelete(item) {
     editspan.addEventListener('click', () => {
         editspan.setAttribute("id", "editthis");
         editClicked = true;
-        let txt = editspan.parentElement.textContent.split(' ');
-        let name = txt[0];
-        let price = txt[1].replace('$', '');
-        let cat = txt[2];
-        let img = txt[3];
-        let com = txt[4];
-        // set the default values for the input boxes
+        let txt = editspan.parentElement.firstChild.childNodes;
+        let txtblock = txt[0].childNodes;
+        let price = txtblock[0].textContent.replace('$', '');
+        let name = txtblock[1].textContent;
+        let cat = txtblock[2].textContent;
+        let imgblock =  txt[1].childNodes;
+        let img = imgblock[0].src;
+        let com = imgblock[1].textContent;
         inname.value = name;
         inprice.value = price;
         incat.value = cat;
@@ -98,7 +99,6 @@ var xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 xhr.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {
-        console.log(this.responseText);
         let txt = JSON.parse(this.responseText).wishItems;
         // iterating through all the items and saving the name and id into local storage
         for(let i = 0; i < txt.length; i++){
@@ -150,10 +150,24 @@ saveItem.addEventListener('click', () => {
     if (editClicked) {
         // get the item that will be edited
         let editthis = document.getElementById("editthis").parentElement;
-        let txt = editthis.textContent.split(' ');
-        let name = txt[0];
-        let itemid = myStorage[name];
-        editthis.innerHTML = `${inname.value} ${inprice.value} ${incat.value} ${inimg.value} ${incom.value}`;
+        console.log(editthis);
+        let txt = editthis.firstChild.childNodes;
+        let txtblock = txt[0].childNodes;
+        // price
+        txtblock[0].textContent = inprice.value;
+        // name
+        let itemName = txtblock[1].textContent;
+        console.log(itemName)
+        txtblock[1].textContent = inname.value;
+        // cat
+        txtblock[2].textContent = incat.value;
+        let imgblock =  txt[1].childNodes;
+        // img
+        imgblock[0].src = inimg.value;
+        // com
+        imgblock[1].textContent = incom.value;
+        let itemid = myStorage[itemName];
+        // change value of itemPrice, itemName, itemCat, myimg, itemCom
         editthis = appendEditDelete(editthis);
         editClicked = false;
         var data = `item=${inname.value}&price=${inprice.value}&category=${incat.value}&image=${inimg.value}&comment=${incom.value}`;
